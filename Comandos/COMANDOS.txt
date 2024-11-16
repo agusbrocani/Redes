@@ -88,15 +88,67 @@ ipv6 address FE80::6 link-local
 no shutdown
 exit
 
+interface GigabitEthernet0/0/0
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.1
+encapsulation dot1Q 1 native
+ipv6 address 2001:db8:19:2::/64
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.30
+encapsulation dot1Q 30 native
+ipv6 address 2001:db8:19:30::/64
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.40
+encapsulation dot1Q 40 native
+ipv6 address 2001:db8:19:40::/64
+no shutdown
+exit
+
+end
+write
+
+************************************************SW2***********************************************
+enable
+configure terminal
+
+vlan 30
+name SIDNEY
+exit
+
+vlan 40
+name MELBOURNE
+exit
+
+interface range FastEthernet0/1 - 5
+switchport access vlan 30
+switchport mode access
+exit
+
+interface range FastEthernet0/6 - 10
+switchport access vlan 40
+switchport mode access
+exit
+
+interface GigabitEthernet0/1
+switchport trunk allowed vlan 1,30,40
+switchport mode trunk
+no shutdown
+exit
+
 end
 write
 
 
-************************************************SW2***********************************************
-
-
-
-
+interface vlan1
+ipv6 address <TODO IPV4>
+no shutdown
+exit
 
 
 
