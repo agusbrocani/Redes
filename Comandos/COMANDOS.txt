@@ -1,4 +1,4 @@
-************************************************R5************************************************
+************************************************R1************************************************
 enable
 configure terminal
 ipv6 unicast-routing
@@ -12,14 +12,13 @@ write
 enable
 configure terminal
 ipv6 unicast-routing
-interface gigabitEthernet 0/0/1
+interface gigabitEthernet 0/0/0
 ipv6 address 2001:db8:19:1::1/64
 ipv6 address FE80::1 link-local
 no shutdown
 end
 write
-
-************************************************R2************************************************
+************************************************R5************************************************
 enable
 configure terminal
 ipv6 unicast-routing
@@ -29,11 +28,4 @@ ipv6 address FE80::3 link-local
 no shutdown
 end
 write
-************************************************SW1-B***********************************************
-enable
-configure terminal
-interface gigabitEthernet 1/0/24
-switchport mode access
-no shutdown
-end
-write
+************************************************SW1***********************************************
