@@ -12,6 +12,7 @@ exit
 interface gigabitEthernet 0/0/0
 ipv6 address 2001:db8:19:1::1/64
 ipv6 address FE80::1 link-local
+ip address 8.1.1.2 255.255.255.252
 no shutdown
 exit
 
@@ -61,6 +62,7 @@ interface gigabitEthernet 1/0/24
 no switchport
 ipv6 address 2001:db8:19:1::2/64
 ipv6 address FE80::1 link-local
+ip address 8.1.1.1 255.255.255.252
 no shutdown
 exit
 
@@ -84,13 +86,17 @@ exit
 interface vlan 10
 ipv6 address 2001:db8:19:10::/64
 ipv6 address FE80::10 link-local
+ip address 192.168.10.30 255.255.255.224
 no shutdown
 exit
 
 interface vlan 20
 ipv6 address 2001:db8:19:20::/64
 ipv6 address FE80::20 link-local
+ip address 192.168.20.30 255.255.255.224
 no shutdown
+exit
+
 
 end
 write
