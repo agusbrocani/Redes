@@ -29,3 +29,14 @@ no shutdown
 end
 write
 ************************************************SW1***********************************************
+enable
+configure terminal
+ipv6 unicast-routing
+interface gigabitEthernet 1/0/24
+no switchport
+ipv6 address 2001:db8:19:1::2/64
+ipv6 address FE80::1 link-local
+no shutdown
+end
+write
+
