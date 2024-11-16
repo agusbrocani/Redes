@@ -22,18 +22,10 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-! Ruta por defecto para Serial0/1/0
-ipv6 route ::/0 2001:DB8:19:8::2 Serial0/1/0
-
-! Ruta por defecto para Serial0/1/1
-ipv6 route ::/0 2001:DB8:19:7::2 Serial0/1/1
-
-! Ruta por defecto para Serial2/0
-ipv6 route ::/0 2001:DB8:19:5::2 Serial2/0
-
-! Ruta por defecto para Serial2/1
-ipv6 route ::/0 2001:DB8:19:6::2 Serial2/1
-
+ipv6 route ::/0 Serial0/1/0
+ipv6 route ::/0 Serial0/1/1
+ipv6 route ::/0 Serial0/2/0
+ipv6 route ::/0 Serial0/2/1
 
 interface serial 0/2/0
 ipv6 address 2001:db8:19:5::1/127
