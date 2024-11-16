@@ -22,6 +22,19 @@ enable
 configure terminal
 ipv6 unicast-routing
 
+! Ruta por defecto para Serial0/1/0
+ipv6 route ::/0 2001:DB8:19:8::2 Serial0/1/0
+
+! Ruta por defecto para Serial0/1/1
+ipv6 route ::/0 2001:DB8:19:7::2 Serial0/1/1
+
+! Ruta por defecto para Serial2/0
+ipv6 route ::/0 2001:DB8:19:5::2 Serial2/0
+
+! Ruta por defecto para Serial2/1
+ipv6 route ::/0 2001:DB8:19:6::2 Serial2/1
+
+
 interface serial 0/2/0
 ipv6 address 2001:db8:19:5::1/127
 ipv6 address FE80::3 link-local
@@ -202,6 +215,12 @@ ipv6 address FE80::cafe link-local
 no shutdown
 exit
 
+interface GigabitEthernet0/0/0
+ipv6 address 2001:CAFE:CAFE:5::1/64
+ipv6 address FE80::cfae link-local
+no shutdown
+exit
+
 end
 write
 ************************************************R3************************************************
@@ -212,6 +231,18 @@ ipv6 unicast-routing
 interface serial 0/1/1
 ipv6 address 2001:db8:19:9::/127
 ipv6 address FE80::feca link-local
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0
+ipv6 address 2001:C15C:0:5::1/64
+ipv6 address FE80::C:15C0 link-local
+no shutdown
+exit
+
+interface GigabitEthernet0/0/1
+ipv6 address 2001:C15C:0:6::1/64
+ipv6 address FE80::cafe link-local
 no shutdown
 exit
 
