@@ -6,6 +6,7 @@ ipv6 unicast-routing
 interface serial 0/2/0
 ipv6 address 2001:db8:19:5::/127
 ipv6 address FE80::5 link-local
+ip address 9.1.1.1 255.255.255.252
 no shutdown
 exit
 
@@ -31,12 +32,14 @@ ipv6 route ::/0 Serial0/2/1
 interface serial 0/2/0
 ipv6 address 2001:db8:19:5::1/127
 ipv6 address FE80::3 link-local
+ip address 9.1.1.2 255.255.255.252
 no shutdown
 exit
 
 interface serial 0/2/1
 ipv6 address 2001:db8:19:6::/127
 ipv6 address FE80::6 link-local
+ip address 11.1.1.1 255.255.255.252
 no shutdown
 exit
 
@@ -108,6 +111,7 @@ ipv6 unicast-routing
 interface serial 0/2/1
 ipv6 address 2001:db8:19:6::1/127
 ipv6 address FE80::6 link-local
+ip address 11.1.1.1 255.255.255.252
 no shutdown
 exit
 
@@ -118,18 +122,21 @@ exit
 interface GigabitEthernet0/0/0.1
 encapsulation dot1Q 1 native
 ipv6 address 2001:db8:19:2::1/64
+ip address 192.168.2.30 255.255.255.224
 no shutdown
 exit
 
 interface GigabitEthernet0/0/0.30
 encapsulation dot1Q 30 
 ipv6 address 2001:db8:19:30::1/64
+ip address 192.168.30.30 255.255.255.224
 no shutdown
 exit
 
 interface GigabitEthernet0/0/0.40
 encapsulation dot1Q 40 
 ipv6 address 2001:db8:19:40::1/64
+ip address 192.168.40.30 255.255.255.224
 no shutdown
 exit
 
@@ -164,14 +171,13 @@ switchport mode trunk
 no shutdown
 exit
 
-end
-write
-
-
 interface vlan1
-ipv6 address <TODO IPV4>
+ip address 192.168.2.1 255.255.255.224
 no shutdown
 exit
+
+end
+write
 ***********************************************ISP-1**********************************************
 enable
 configure terminal
