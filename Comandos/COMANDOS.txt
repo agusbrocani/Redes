@@ -3,7 +3,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 Serial0/2/0
+ipv6 route ::/0 2001:db8:19:5::1
 ip route 0.0.0.0 0.0.0.0 Serial0/2/0
 
 interface serial 0/2/0
@@ -20,6 +20,15 @@ ip address 8.1.1.2 255.255.255.252
 no shutdown
 exit
 
+ipv6 router ospf 1
+router-id 1.1.1.1
+default-information originate
+exit
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface GigabitEthernet0/0/0
+ipv6 ospf 1 area 0
+
 end
 write
 ************************************************R5************************************************
@@ -27,7 +36,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 Serial0/1/1
+ipv6 route ::/0 2001:db8:19:7::1
 ip route 0.0.0.0 0.0.0.0 Serial0/1/1
 
 interface serial 0/2/0
@@ -58,6 +67,19 @@ ip address 13.1.1.2 255.255.255.252
 no shutdown
 exit
 
+ipv6 router ospf 1
+router-id 5.5.5.5
+default-information originate
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
+interface serial0/1/1
+ipv6 ospf 1 area 0
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface serial0/2/1
+ipv6 ospf 1 area 0
+
 end
 write
 ************************************************SW1***********************************************
@@ -65,7 +87,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 gigabitEthernet 1/0/24
+ipv6 route ::/0 2001:db8:19:1::1
 ip route 0.0.0.0 0.0.0.0 gigabitEthernet 1/0/24
 
 interface gigabitEthernet 1/0/24
@@ -107,6 +129,14 @@ ip address 192.168.20.30 255.255.255.224
 no shutdown
 exit
 
+ipv6 router ospf 1
+router-id 9.9.9.9
+default-information originate
+passive-interface gi1/0/1
+passive-interface gi1/0/6
+exit
+interface GigabitEthernet 1/0/24
+ipv6 ospf 1 area 0
 
 end
 write
@@ -115,7 +145,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 Serial0/2/1
+ipv6 route ::/0 2001:db8:19:6::
 ip route 0.0.0.0 0.0.0.0 Serial0/2/1
 
 interface serial 0/2/1
@@ -149,6 +179,14 @@ ipv6 address 2001:db8:19:40::1/64
 ip address 192.168.40.30 255.255.255.224
 no shutdown
 exit
+
+ipv6 router ospf 1
+router-id 2.2.2.2
+default-information originate
+passive-interface GigabitEthernet0/0/0
+exit
+interface serial0/2/1
+ipv6 ospf 1 area 0
 
 end
 write
@@ -191,6 +229,10 @@ write
 ***********************************************ISP-1**********************************************
 enable
 configure terminal
+ipv6 unicast-routing
+
+ipv6 route ::/0 2001:db8:19:7::
+ip route 0.0.0.0 0.0.0.0 Serial0/1/1
 
 interface serial 0/1/1
 ipv6 address 2001:db8:19:7::1/127
@@ -213,6 +255,15 @@ ip address 8.8.8.1 255.255.255.224
 no shutdown 
 exit
 
+ipv6 router ospf 1
+router-id 7.7.7.7
+default-information originate
+passive-interface GigabitEthernet0/0/0
+passive-interface GigabitEthernet0/0/1
+exit
+interface serial0/1/1
+ipv6 ospf 1 area 0
+
 end
 write
 ************************************************R4************************************************
@@ -220,7 +271,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 Serial0/1/0
+ipv6 route ::/0 2001:db8:19:8::
 ip route 0.0.0.0 0.0.0.0 Serial0/1/0
 
 interface serial 0/1/0
@@ -244,6 +295,16 @@ ip address 200.168.2.30 255.255.255.224
 no shutdown
 exit
 
+ipv6 router ospf 1
+router-id 4.4.4.4
+default-information originate
+passive-interface GigabitEthernet0/0/0
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
+interface serial0/1/1
+ipv6 ospf 1 area 0
+
 end
 write
 ************************************************R3************************************************
@@ -251,7 +312,7 @@ enable
 configure terminal
 ipv6 unicast-routing
 
-ipv6 route ::/0 Serial0/1/1
+ipv6 route ::/0 2001:db8:19:9::1
 ip route 0.0.0.0 0.0.0.0 Serial0/1/1
 
 interface serial 0/1/1
@@ -274,6 +335,15 @@ ipv6 address FE80::cafe link-local
 ip address 102.100.100.1 255.255.255.224
 no shutdown
 exit
+
+ipv6 router ospf 1
+router-id 3.3.3.3
+default-information originate
+passive-interface GigabitEthernet0/0/0
+passive-interface GigabitEthernet0/0/1
+exit
+interface serial0/1/1
+ipv6 ospf 1 area 0
 
 end
 write
