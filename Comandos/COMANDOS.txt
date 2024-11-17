@@ -46,12 +46,14 @@ exit
 interface serial 0/1/1
 ipv6 address 2001:db8:19:7::/127
 ipv6 address FE80::cafe link-local
+ip address 12.1.1.2 255.255.255.252
 no shutdown
 exit
 
 interface serial 0/1/0
 ipv6 address 2001:db8:19:8::/127
 ipv6 address FE80::feca link-local
+ip address 13.1.1.2 255.255.255.252
 no shutdown
 exit
 
@@ -185,6 +187,7 @@ configure terminal
 interface serial 0/1/1
 ipv6 address 2001:db8:19:7::1/127
 ipv6 address FE80::7 link-local
+ip address 12.1.1.1 255.255.255.224
 no shutdown
 exit
 
@@ -210,12 +213,14 @@ ipv6 unicast-routing
 interface serial 0/1/0
 ipv6 address 2001:db8:19:8::1/127
 ipv6 address FE80::cafe link-local
+ip address 13.1.1.1 255.255.255.252
 no shutdown
 exit
 
 interface serial 0/1/1
 ipv6 address 2001:db8:19:9::1/127
 ipv6 address FE80::cafe link-local
+ip address 14.1.1.1 255.255.255.252
 no shutdown
 exit
 
@@ -235,6 +240,7 @@ ipv6 unicast-routing
 interface serial 0/1/1
 ipv6 address 2001:db8:19:9::/127
 ipv6 address FE80::feca link-local
+ip address 14.1.1.2 255.255.255.252
 no shutdown
 exit
 
