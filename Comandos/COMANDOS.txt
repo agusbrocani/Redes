@@ -240,6 +240,7 @@ exit
 interface GigabitEthernet0/0/0
 ipv6 address 2001:CAFE:CAFE:5::1/64
 ipv6 address FE80::cfae link-local
+ip address 200.168.2.30 255.255.255.224
 no shutdown
 exit
 
@@ -263,19 +264,29 @@ exit
 interface GigabitEthernet0/0/0
 ipv6 address 2001:C15C:0:5::1/64
 ipv6 address FE80::C:15C0 link-local
+ip address 101.100.100.1 255.255.255.224
 no shutdown
 exit
 
 interface GigabitEthernet0/0/1
 ipv6 address 2001:C15C:0:6::1/64
 ipv6 address FE80::cafe link-local
+ip address 102.100.100.1 255.255.255.224
 no shutdown
 exit
 
 end
 write
+************************************************SW3***********************************************
+enable
+configure terminal
 
+interface vlan 1
+ip address 200.168.2.1 255.255.255.224
+no shutdown
 
+end
+write
 
 
 
