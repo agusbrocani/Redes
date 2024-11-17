@@ -137,6 +137,13 @@ passive-interface gi1/0/6
 exit
 interface GigabitEthernet 1/0/24
 ipv6 ospf 1 area 0
+exit
+interface vlan 10
+ipv6 ospf 1 area 0
+exit
+interface vlan 20
+ipv6 ospf 1 area 0
+exit
 
 end
 write
