@@ -29,6 +29,10 @@ ipv6 ospf 1 area 0
 interface GigabitEthernet0/0/0
 ipv6 ospf 1 area 0
 
+router ospf 100
+network 9.1.1.1 0.0.0.3 area 0
+network 8.1.1.2 0.0.0.3 area 0 
+
 end
 write
 ************************************************R5************************************************
@@ -37,7 +41,7 @@ configure terminal
 ipv6 unicast-routing
 
 ipv6 route ::/0 2001:db8:19:7::1
-ip route 0.0.0.0 0.0.0.0 Serial0/1/1
+ip route 0.0.0.0 0.0.0.0 12.1.1.1
 
 interface serial 0/2/0
 ipv6 address 2001:db8:19:5::1/127
@@ -73,15 +77,42 @@ default-information originate
 exit
 interface serial0/1/0
 ipv6 ospf 1 area 0
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface serial0/2/1
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+network 9.1.1.2 0.0.0.3 area 0
+network 11.1.1.1 0.0.0.3 area 0
+network 13.1.1.2 0.0.0.3 area 0
+
+end
+write
+----------ANTES
+
+ipv6 router ospf 1
+router-id 5.5.5.5
+default-information originate
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
 interface serial0/1/1
 ipv6 ospf 1 area 0
 interface serial0/2/0
 ipv6 ospf 1 area 0
 interface serial0/2/1
 ipv6 ospf 1 area 0
+exit
 
-end
-write
+router ospf 100
+network 9.1.1.2 0.0.0.3 area 0
+network 11.1.1.1 0.0.0.3 area 0
+network 12.1.1.2 0.0.0.3 area 0
+network 13.1.1.2 0.0.0.3 area 0
+
+
 ************************************************SW1***********************************************
 enable
 configure terminal
@@ -146,6 +177,13 @@ interface vlan 20
 ipv6 ospf 1 area 0
 exit
 
+router ospf 100
+passive-interface gi1/0/1
+passive-interface gi1/0/6
+network 8.1.1.1 0.0.0.3 area 0
+network 192.168.10.30 0.0.0.31 area 0
+network 192.168.20.30 0.0.0.31 area 0
+
 end
 write
 ************************************************R2************************************************
@@ -207,6 +245,17 @@ ipv6 ospf 1 area 0
 exit
 interface GigabitEthernet0/0/0.40
 ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/0.1
+passive-interface gi0/0/0.30
+passive-interface gi0/0/0.40
+network 11.1.1.1 0.0.0.3 area 0
+network 192.168.2.30 0.0.0.31 area 0 
+network 192.168.30.30 0.0.0.31 area 0
+network 192.168.40.30 0.0.0.31 area 0 
 
 end
 write
@@ -252,7 +301,7 @@ configure terminal
 ipv6 unicast-routing
 
 ipv6 route ::/0 2001:db8:19:7::
-ip route 0.0.0.0 0.0.0.0 Serial0/1/1
+ip route 0.0.0.0 0.0.0.0 12.1.1.2
 
 interface serial 0/1/1
 ipv6 address 2001:db8:19:7::1/127
@@ -275,6 +324,17 @@ ip address 8.8.8.1 255.255.255.224
 no shutdown 
 exit
 
+end
+write
+
+-----------------ANTES-----------
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/1
+network 12.1.1.1 0.0.0.3 area 0
+network 100.100.100.1 0.0.0.31 area 0
+network 8.8.8.1 0.0.0.31 area 0
+
 ipv6 router ospf 1
 router-id 7.7.7.7
 default-information originate
@@ -289,9 +349,8 @@ ipv6 ospf 1 area 0
 exit
 interface GigabitEthernet0/0/1
 ipv6 ospf 1 area 0
+exit
 
-end
-write
 ************************************************R4************************************************
 enable
 configure terminal
@@ -333,6 +392,13 @@ ipv6 ospf 1 area 0
 exit
 interface GigabitEthernet0/0/0
 ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+network 13.1.1.1 0.0.0.3 area 0
+network 14.1.1.1 0.0.0.3 area 0
+network 200.168.2.30 0.0.0.31 area 0
 
 end
 write
@@ -379,6 +445,14 @@ ipv6 ospf 1 area 0
 exit
 interface GigabitEthernet0/0/1
 ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/1
+network 14.1.1.2 0.0.0.3 area 0
+network 101.100.100.1 0.0.0.31 area 0
+network 102.100.100.1 0.0.0.31 area 0
 
 end
 write
