@@ -1,0 +1,15 @@
+configure terminal
+ip domain-name labredes.com
+crypto key generate rsa
+
+//1024
+
+line vty 0 5
+transport input ssh
+login local
+exit
+username cisco privilege 15 password class
+enable secret class
+ip ssh version 2
+end
+write

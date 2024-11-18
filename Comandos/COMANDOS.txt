@@ -460,6 +460,7 @@ write
 enable
 configure terminal
 
+ip default-gateway 200.168.2.30
 interface vlan 1
 ip address 200.168.2.1 255.255.255.224
 no shutdown
