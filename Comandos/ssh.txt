@@ -1,8 +1,10 @@
+!copiar los primeros 4 comandos
+enable
 configure terminal
 ip domain-name labredes.com
 crypto key generate rsa
 
-//1024
+!usar 1024 como valor
 
 line vty 0 5
 transport input ssh

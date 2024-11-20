@@ -1,0 +1,14 @@
+enable
+configure terminal
+line console 0
+password cisco
+login
+line vty 0 4
+password cisco
+login
+logging synchronous
+exit
+no ip domain-lookup
+enable secret class
+end
+write

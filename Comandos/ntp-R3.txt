@@ -1,0 +1,12 @@
+************************************************R3************************************************
+enable
+configure terminal
+ntp server 102.100.100.10
+ntp update-calendar
+end
+write
+
+
+show ntp associations
+show clock
+show ntp status

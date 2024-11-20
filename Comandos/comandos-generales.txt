@@ -1,0 +1,477 @@
+************************************************R1************************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname R1
+
+ipv6 route ::/0 2001:db8:19:5::1
+ip route 0.0.0.0 0.0.0.0 Serial0/2/0
+
+interface serial 0/2/0
+ipv6 address 2001:db8:19:5::/127
+ipv6 address FE80::5 link-local
+ip address 9.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface gigabitEthernet 0/0/0
+ipv6 address 2001:db8:19:1::1/64
+ipv6 address FE80::1 link-local
+ip address 8.1.1.2 255.255.255.252
+no shutdown
+exit
+
+ipv6 router ospf 1
+router-id 1.1.1.1
+default-information originate
+exit
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface GigabitEthernet0/0/0
+ipv6 ospf 1 area 0
+
+router ospf 100
+network 9.1.1.1 0.0.0.3 area 0
+network 8.1.1.2 0.0.0.3 area 0 
+
+end
+write
+************************************************R5************************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname R5
+
+ipv6 route ::/0 2001:db8:19:7::1
+ip route 0.0.0.0 0.0.0.0 12.1.1.1
+
+interface serial 0/2/0
+clock rate 128000
+ipv6 address 2001:db8:19:5::1/127
+ipv6 address FE80::3 link-local
+ip address 9.1.1.2 255.255.255.252
+no shutdown
+exit
+
+interface serial 0/2/1
+clock rate 128000
+ipv6 address 2001:db8:19:6::/127
+ipv6 address FE80::6 link-local
+ip address 11.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface serial 0/1/1
+clock rate 128000
+ipv6 address 2001:db8:19:7::/127
+ipv6 address FE80::cafe link-local
+ip address 12.1.1.2 255.255.255.252
+no shutdown
+exit
+
+interface serial 0/1/0
+clock rate 128000
+ipv6 address 2001:db8:19:8::/127
+ipv6 address FE80::feca link-local
+ip address 13.1.1.2 255.255.255.252
+no shutdown
+exit
+
+ipv6 router ospf 1
+router-id 5.5.5.5
+default-information originate
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface serial0/2/1
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+network 9.1.1.2 0.0.0.3 area 0
+network 11.1.1.1 0.0.0.3 area 0
+network 13.1.1.2 0.0.0.3 area 0
+
+end
+write
+----------VERSION ANTERIOR(NO COPIAR)----------
+ipv6 router ospf 1
+router-id 5.5.5.5
+default-information originate
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
+interface serial0/1/1
+ipv6 ospf 1 area 0
+interface serial0/2/0
+ipv6 ospf 1 area 0
+interface serial0/2/1
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+network 9.1.1.2 0.0.0.3 area 0
+network 11.1.1.1 0.0.0.3 area 0
+network 12.1.1.2 0.0.0.3 area 0
+network 13.1.1.2 0.0.0.3 area 0
+************************************************SW1***********************************************
+enable
+configure terminal
+ip routing
+ipv6 unicast-routing
+hostname SW1
+
+ipv6 route ::/0 2001:db8:19:1::1
+ip route 0.0.0.0 0.0.0.0 gigabitEthernet 1/0/24
+
+interface gigabitEthernet 1/0/24
+no switchport
+ipv6 address 2001:db8:19:1::2/64
+ipv6 address FE80::2 link-local
+ip address 8.1.1.1 255.255.255.252
+no shutdown
+exit
+
+vlan 10
+name BRISBANE
+exit
+
+vlan 20
+name PERTH
+exit
+
+interface vlan 10
+ipv6 address 2001:db8:19:10::/64
+ipv6 address FE80::10 link-local
+ip address 192.168.10.30 255.255.255.224
+no shutdown
+exit
+
+interface vlan 20
+ipv6 address 2001:db8:19:20::/64
+ipv6 address FE80::20 link-local
+ip address 192.168.20.30 255.255.255.224
+no shutdown
+exit
+
+interface range GigabitEthernet1/0/1 - 5
+switchport access vlan 10
+switchport mode access
+exit
+interface range GigabitEthernet1/0/6 - 10
+switchport access vlan 20
+switchport mode access
+exit
+
+ipv6 router ospf 1
+router-id 9.9.9.9
+default-information originate
+passive-interface gi1/0/1
+passive-interface gi1/0/6
+exit
+interface GigabitEthernet 1/0/24
+ipv6 ospf 1 area 0
+exit
+interface vlan 10
+ipv6 ospf 1 area 0
+exit
+interface vlan 20
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi1/0/1
+passive-interface gi1/0/6
+network 8.1.1.1 0.0.0.3 area 0
+network 192.168.10.30 0.0.0.31 area 0
+network 192.168.20.30 0.0.0.31 area 0
+
+end
+write
+************************************************R2************************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname R2
+
+ipv6 route ::/0 2001:db8:19:6::
+ip route 0.0.0.0 0.0.0.0 Serial0/2/1
+
+interface serial 0/2/1
+ipv6 address 2001:db8:19:6::1/127
+ipv6 address FE80::6 link-local
+ip address 11.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.1
+encapsulation dot1Q 1 native
+ipv6 address 2001:db8:19:2::1/64
+ip address 192.168.2.30 255.255.255.224
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.30
+encapsulation dot1Q 30 
+ipv6 address 2001:db8:19:30::1/64
+ip address 192.168.30.30 255.255.255.224
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0.40
+encapsulation dot1Q 40 
+ipv6 address 2001:db8:19:40::1/64
+ip address 192.168.40.30 255.255.255.224
+no shutdown
+exit
+
+ipv6 router ospf 1
+router-id 2.2.2.2
+default-information originate
+passive-interface GigabitEthernet0/0/0
+passive-interface GigabitEthernet0/0/0.1
+passive-interface GigabitEthernet0/0/0.30
+passive-interface GigabitEthernet0/0/0.40
+exit
+interface serial0/2/1
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0.1
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0.30
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0.40
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/0.1
+passive-interface gi0/0/0.30
+passive-interface gi0/0/0.40
+network 11.1.1.1 0.0.0.3 area 0
+network 192.168.2.30 0.0.0.31 area 0 
+network 192.168.30.30 0.0.0.31 area 0
+network 192.168.40.30 0.0.0.31 area 0 
+
+end
+write
+************************************************SW2***********************************************
+enable
+configure terminal
+hostname SW2
+
+vlan 30
+name SIDNEY
+exit
+
+vlan 40
+name MELBOURNE
+exit
+
+interface range FastEthernet0/1 - 5
+switchport access vlan 30
+switchport mode access
+exit
+
+interface range FastEthernet0/6 - 10
+switchport access vlan 40
+switchport mode access
+exit
+
+interface GigabitEthernet0/1
+switchport trunk allowed vlan 1,30,40
+switchport mode trunk
+no shutdown
+exit
+
+interface vlan1
+ip address 192.168.2.1 255.255.255.224
+no shutdown
+exit
+
+end
+write
+***********************************************ISP-1**********************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname ISP-1
+
+ipv6 route ::/0 2001:db8:19:7::
+ip route 0.0.0.0 0.0.0.0 12.1.1.2
+
+interface serial 0/1/1
+ipv6 address 2001:db8:19:7::1/127
+ipv6 address FE80::7 link-local
+ip address 12.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0
+ipv6 address 2001:cafe:cafe:1::1/64
+ipv6 address FE80::1 link-local
+ip address 100.100.100.1 255.255.255.224
+no shutdown
+exit
+
+interface GigabitEthernet0/0/1
+ipv6 address 2001:cafe:cafe:2::1/64
+ipv6 address FE80::1 link-local
+ip address 8.8.8.1 255.255.255.224
+no shutdown 
+exit
+
+end
+write
+----------VERSION ANTERIOR(NO COPIAR)----------
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/1
+network 12.1.1.1 0.0.0.3 area 0
+network 100.100.100.1 0.0.0.31 area 0
+network 8.8.8.1 0.0.0.31 area 0
+
+ipv6 router ospf 1
+router-id 7.7.7.7
+default-information originate
+passive-interface GigabitEthernet0/0/0
+passive-interface GigabitEthernet0/0/1
+exit
+interface serial0/1/1
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/1
+ipv6 ospf 1 area 0
+exit
+************************************************R4************************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname R4
+
+ipv6 route ::/0 2001:db8:19:8::
+ip route 0.0.0.0 0.0.0.0 Serial0/1/0
+
+interface serial 0/1/0
+ipv6 address 2001:db8:19:8::1/127
+ipv6 address FE80::cafe link-local
+ip address 13.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface serial 0/1/1
+ipv6 address 2001:db8:19:9::1/127
+ipv6 address FE80::cafe link-local
+ip address 14.1.1.1 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0
+ipv6 address 2001:CAFE:CAFE:5::1/64
+ipv6 address FE80::cfae link-local
+ip address 200.168.2.30 255.255.255.224
+no shutdown
+exit
+
+ipv6 router ospf 1
+router-id 4.4.4.4
+default-information originate
+passive-interface GigabitEthernet0/0/0
+exit
+interface serial0/1/0
+ipv6 ospf 1 area 0
+interface serial0/1/1
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+network 13.1.1.1 0.0.0.3 area 0
+network 14.1.1.1 0.0.0.3 area 0
+network 200.168.2.30 0.0.0.31 area 0
+
+end
+write
+************************************************R3************************************************
+enable
+configure terminal
+ipv6 unicast-routing
+hostname R3
+
+ipv6 route ::/0 2001:db8:19:9::1
+ip route 0.0.0.0 0.0.0.0 Serial0/1/1
+
+interface serial 0/1/1
+clock rate 128000
+ipv6 address 2001:db8:19:9::/127
+ipv6 address FE80::feca link-local
+ip address 14.1.1.2 255.255.255.252
+no shutdown
+exit
+
+interface GigabitEthernet0/0/0
+ipv6 address 2001:C15C:0:5::1/64
+ipv6 address FE80::C:15C0 link-local
+ip address 101.100.100.1 255.255.255.224
+no shutdown
+exit
+
+interface GigabitEthernet0/0/1
+ipv6 address 2001:C15C:0:6::1/64
+ipv6 address FE80::cafe link-local
+ip address 102.100.100.1 255.255.255.224
+no shutdown
+exit
+
+ipv6 router ospf 1
+router-id 3.3.3.3
+default-information originate
+passive-interface GigabitEthernet0/0/0
+passive-interface GigabitEthernet0/0/1
+exit
+interface serial0/1/1
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/0
+ipv6 ospf 1 area 0
+exit
+interface GigabitEthernet0/0/1
+ipv6 ospf 1 area 0
+exit
+
+router ospf 100
+passive-interface gi0/0/0
+passive-interface gi0/0/1
+network 14.1.1.2 0.0.0.3 area 0
+network 101.100.100.1 0.0.0.31 area 0
+network 102.100.100.1 0.0.0.31 area 0
+
+end
+write
+************************************************SW3***********************************************
+enable
+configure terminal
+hostname SW3
+
+ip default-gateway 200.168.2.30
+interface vlan 1
+ip address 200.168.2.1 255.255.255.224
+no shutdown
+
+end
+write
